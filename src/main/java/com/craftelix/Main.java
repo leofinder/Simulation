@@ -1,7 +1,12 @@
 package com.craftelix;
 
+import java.util.List;
+import java.util.Map;
+
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        MapGenerator mapGenerator = new MapGenerator();
+        Map<Integer, List<Integer>> map = mapGenerator.generate(10, 10);
+        map.forEach((k, v) -> System.out.println(k + " : " + v));
     }
 }
