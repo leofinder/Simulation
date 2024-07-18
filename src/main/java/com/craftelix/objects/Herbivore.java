@@ -1,9 +1,13 @@
 package com.craftelix.objects;
 
+import com.craftelix.map.Cell;
+
+import java.util.Map;
+
 public class Herbivore extends Creature {
 
-    public Herbivore(int speed, int lives) {
-        super(speed, lives);
+    public Herbivore(Cell cell, Map<Cell, Entity> field, int lives, int speed) {
+        super(cell, field, lives, speed);
     }
 
     @Override

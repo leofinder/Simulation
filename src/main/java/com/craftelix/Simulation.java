@@ -1,7 +1,8 @@
 package com.craftelix;
 
 import com.craftelix.actions.Action;
-import com.craftelix.map.MapRenderer;
+import com.craftelix.map.Field;
+import com.craftelix.map.FieldRenderer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,11 +11,16 @@ import java.util.List;
 public class Simulation {
 
     private boolean auto;
-    private HashMap<Integer, List<Integer>> map;
     private int moveCounter = 0;
-    private MapRenderer renderer;
+    private Field field;
+    private FieldRenderer renderer;
     private List<Action> initActions = new ArrayList<>();
     private List<Action> turnActions = new ArrayList<>();
+
+    public Simulation(Field field) {
+        this.field = field;
+        this.renderer = new FieldRenderer(field);
+    }
 
     public void nextTurn() {
         // todo
