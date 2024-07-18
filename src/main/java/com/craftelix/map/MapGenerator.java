@@ -1,4 +1,6 @@
-package com.craftelix;
+package com.craftelix.map;
+
+import com.craftelix.objects.Entity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,6 +8,10 @@ import java.util.List;
 import java.util.Map;
 
 public class MapGenerator {
+
+    public Map<Cell, Entity> generateMap(int rows, int cols) {
+        // todo
+    }
 
     public Map<Integer, List<Integer>> generate(int rows, int cols) {
         Map<Integer, List<Integer>> map = new HashMap<>();
