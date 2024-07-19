@@ -8,8 +8,8 @@ public class Predator extends Creature {
 
     private int attack;
 
-    public Predator(Cell cell, Map<Cell, Entity> field, int lives, int speed, int attack) {
-        super(cell, field, lives, speed);
+    public Predator(Cell cell, Map<Cell, Entity> map, int health, int speed, int attack) {
+        super(cell, map, health, speed);
         this.attack = attack;
     }
 
@@ -20,6 +20,11 @@ public class Predator extends Creature {
 
     @Override
     public String toString() {
-        return "🐺";
+        return "Predator{"
+                + "cell={" + cell.getX() + "," + cell.getY() + '}'
+                + ", health=" + health
+                + ", speed=" + speed
+                + ", attack=" + attack
+                + '}';
     }
 }

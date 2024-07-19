@@ -6,8 +6,8 @@ import java.util.Map;
 
 public class Herbivore extends Creature {
 
-    public Herbivore(Cell cell, Map<Cell, Entity> field, int lives, int speed) {
-        super(cell, field, lives, speed);
+    public Herbivore(Cell cell, Map<Cell, Entity> map, int health, int speed) {
+        super(cell, map, health, speed);
     }
 
     @Override
@@ -17,6 +17,10 @@ public class Herbivore extends Creature {
 
     @Override
     public String toString() {
-        return "\uD83D\uDC07";
+        return "Herbivore{"
+                + "cell={" + cell.getX() + "," + cell.getY() + '}'
+                + ", health=" + health
+                + ", speed=" + speed
+                + '}';
     }
 }

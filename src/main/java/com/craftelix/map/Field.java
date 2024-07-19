@@ -9,8 +9,8 @@ import java.util.Map;
 
 public class Field {
 
-    private final int rows;
-    private final int cols;
+    private int rows;
+    private int cols;
     private final Map<Cell, Entity> map = new HashMap<>();
     private final List<Entity> entities = new ArrayList<>();
 
