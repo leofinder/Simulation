@@ -1,4 +1,4 @@
 package com.craftelix.objects;
 
-public class Tree extends Static {
+public class Tree extends StaticObject {
 }

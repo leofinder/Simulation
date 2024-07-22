@@ -1,8 +1,8 @@
 package com.craftelix.objects;
 
-import com.craftelix.map.Cell;
+import com.craftelix.strategy.SearchStrategy;
+import com.craftelix.world.Cell;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public abstract class Creature extends Entity {
@@ -11,13 +11,14 @@ public abstract class Creature extends Entity {
     protected Map<Cell, Entity> map;
     protected int health;
     protected int speed;
+    protected SearchStrategy strategy;
 
-    public Creature(Cell cell, Map<Cell, Entity> map, int health, int speed) {
+    public Creature(Cell cell, Map<Cell, Entity> map, int health, int speed, SearchStrategy strategy) {
         this.cell = cell;
         this.map = map;
         this.health = health;
         this.speed = speed;
-
+        this.strategy = strategy;
     }
 
     public Cell getCell() {

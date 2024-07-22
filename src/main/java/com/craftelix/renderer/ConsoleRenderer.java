@@ -1,19 +1,24 @@
-package com.craftelix.map;
+package com.craftelix.renderer;
 
+import com.craftelix.world.Cell;
+import com.craftelix.world.World;
 import com.craftelix.objects.*;
 
-public class ConsoleRenderer extends Renderer {
+public class ConsoleRenderer implements Renderer {
 
-    public ConsoleRenderer(Field field) {
-        super(field);
+    private final World world;
+
+    public ConsoleRenderer(World world) {
+        this.world = world;
     }
 
     @Override
     public void render() {
+        System.out.print("\033[H\033[2J");
         StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < field.getRows(); i++) {
-            for (int j = 0; j < field.getCols(); j++) {
-                builder.append(getEmoji(field.getMap().get(new Cell(i, j))));
+        for (int i = 0; i < world.getRows(); i++) {
+            for (int j = 0; j < world.getCols(); j++) {
+                builder.append(getEmoji(world.getMap().get(new Cell(i, j))));
             }
             builder.append("\n");
         }

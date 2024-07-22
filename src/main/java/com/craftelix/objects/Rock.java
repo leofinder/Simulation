@@ -1,4 +1,4 @@
 package com.craftelix.objects;
 
-public class Rock extends Static {
+public class Rock extends StaticObject {
 }
