@@ -27,8 +27,6 @@ public class Main {
 //                                                        new BreadthFirstSearchStrategy());
 //        World world = new World(10, 30, defaultValues);
 
-
-
 //        Renderer renderer = new ConsoleRenderer(world);
 //        List<Action> initActions = new ArrayList<>();
 //        initActions.add(new MapGeneratorAction());
@@ -42,7 +40,7 @@ public class Main {
     public static void testBFS() {
         DefaultValues defaultValues = new DefaultValues(0, 5, 5, 0,
                 new BreadthFirstSearchStrategy());
-        World world = new World(5, 5, defaultValues);
+        World world = new World(10, 10, defaultValues);
         MapGeneratorAction action = new MapGeneratorAction();
         action.run(world);
         Set<Cell> targetCells = SearchStrategyUtils.getTargetCells(world.getMap(), Arrays.asList(Grass.class));
@@ -50,7 +48,9 @@ public class Main {
         BreadthFirstSearchStrategy strategy = new BreadthFirstSearchStrategy();
         for (Cell cell : herbivores) {
             List<Cell> path = strategy.getPathToTargetCell(world.getMap(), cell, targetCells);
-            System.out.println(path);
+            System.out.println();
+            System.out.println("Path: " + path);
+            System.out.println("========================================================================");
         }
 
     }

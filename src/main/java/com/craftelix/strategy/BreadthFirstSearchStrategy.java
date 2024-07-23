@@ -1,7 +1,7 @@
 package com.craftelix.strategy;
 
 import com.craftelix.objects.Entity;
-import com.craftelix.objects.StaticObject;
+import com.craftelix.objects.Resources;
 import com.craftelix.world.Cell;
 
 import java.util.*;
@@ -21,6 +21,9 @@ public class BreadthFirstSearchStrategy implements SearchStrategy {
                 }
             }
         }
+        if (path.isEmpty() && !lastNodeValues.isEmpty()) {
+            path = treeList.getPathTo(lastNodeValues.get(0));
+        }
         return path;
     }
 
@@ -34,15 +37,19 @@ public class BreadthFirstSearchStrategy implements SearchStrategy {
 
         while (!queue.isEmpty() && !targetFound) {
             Cell cell = queue.remove();
+            System.out.println("Cell: " + cell);
+            System.out.println("Child: " + SearchStrategyUtils.getNeighborCells(cell));
+            System.out.println("Visited: " + visited);
+            System.out.println();
             for (Cell neighborCell : SearchStrategyUtils.getNeighborCells(cell)) {
                 if (!map.containsKey(neighborCell)) {
                     continue;
                 }
-                if (map.get(neighborCell) instanceof StaticObject) {
+                if (map.get(neighborCell) != null && !(map.get(neighborCell) instanceof Resources)) {
                     continue;
                 }
-                treeList.add(cell, neighborCell);
                 if (!visited.contains(neighborCell)) {
+                    treeList.add(cell, neighborCell);
                     if (targetCells.contains(neighborCell)) {
                         targetFound = true;
                     }
@@ -53,6 +60,5 @@ public class BreadthFirstSearchStrategy implements SearchStrategy {
         }
         return treeList;
     }
-
 
 }

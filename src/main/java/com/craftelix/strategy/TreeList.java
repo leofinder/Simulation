@@ -14,19 +14,11 @@ public class TreeList<E> {
         boolean rsl = false;
         Optional<Node<E>> parentNode = findBy(parent);
         Optional<Node<E>> childNode = findBy(child);
-        if (parentNode.isPresent()) {
-            if (childNode.isPresent()) {
-                if (!parentNode.get().children.contains(childNode.get())) {
-                    parentNode.get().children.add(childNode.get());
-                    childNode.get().parents.add(parentNode.get());
-                    rsl = true;
-                }
-            } else {
-                Node<E> newChildNode = new Node<>(child);
-                parentNode.get().children.add(newChildNode);
-                newChildNode.parents.add(parentNode.get());
-                rsl = true;
-            }
+        if (parentNode.isPresent() && childNode.isEmpty()) {
+            Node<E> newChildNode = new Node<>(child);
+            parentNode.get().children.add(newChildNode);
+            newChildNode.parent = parentNode.get();
+            rsl = true;
         }
         return rsl;
     }
@@ -66,10 +58,9 @@ public class TreeList<E> {
         Optional<Node<E>> node = findBy(value);
         if (node.isPresent()) {
             Node<E> el = node.get();
-            path.add(el.value);
-            while (!el.parents.isEmpty()) {
-                el = el.parents.get(0);
+            while (el != null) {
                 path.add(0, el.value);
+                el = el.parent;
             }
         }
         return path;
@@ -77,7 +68,7 @@ public class TreeList<E> {
 
     private class Node<E> {
         final E value;
-        final List<Node<E>> parents = new ArrayList<>();
+        Node<E> parent = null;
         final List<Node<E>> children = new ArrayList<>();
 
         public Node(E value) {

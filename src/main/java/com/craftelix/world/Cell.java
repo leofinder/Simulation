@@ -36,4 +36,12 @@ public class Cell {
     public int hashCode() {
         return Objects.hash(row, col);
     }
+
+    @Override
+    public String toString() {
+        return "Cell{"
+                + "row=" + row
+                + ", col=" + col
+                + '}';
+    }
 }
