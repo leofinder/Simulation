@@ -37,10 +37,10 @@ public class BreadthFirstSearchStrategy implements SearchStrategy {
 
         while (!queue.isEmpty() && !targetFound) {
             Cell cell = queue.remove();
-            System.out.println("Cell: " + cell);
-            System.out.println("Child: " + SearchStrategyUtils.getNeighborCells(cell));
-            System.out.println("Visited: " + visited);
-            System.out.println();
+//            System.out.println("Cell: " + cell);
+//            System.out.println("Child: " + SearchStrategyUtils.getNeighborCells(cell));
+//            System.out.println("Visited: " + visited);
+//            System.out.println();
             for (Cell neighborCell : SearchStrategyUtils.getNeighborCells(cell)) {
                 if (!map.containsKey(neighborCell)) {
                     continue;

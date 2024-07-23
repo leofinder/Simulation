@@ -21,28 +21,29 @@ import java.util.Set;
 
 public class Main {
     public static void main(String[] args) {
-        testBFS();
+        //testBFS();
 
-//        DefaultValues defaultValues = new DefaultValues(7, 10, 20, 40,
-//                                                        new BreadthFirstSearchStrategy());
-//        World world = new World(10, 30, defaultValues);
+        DefaultValues defaultValues = new DefaultValues(7, 10, 20, 40,
+                new BreadthFirstSearchStrategy());
+        World world = new World(10, 30, defaultValues);
 
-//        Renderer renderer = new ConsoleRenderer(world);
-//        List<Action> initActions = new ArrayList<>();
-//        initActions.add(new MapGeneratorAction());
-//        List<Action> turnActions = new ArrayList<>();
-//        turnActions.add(new AddEntityAction());
-//        turnActions.add(new MoveCreaturesAction());
-//        Simulation simulation = new Simulation(world, renderer, initActions, turnActions);
-//        simulation.start();
-    }
+        Renderer renderer = new ConsoleRenderer(world);
+        List<Action> initActions = new ArrayList<>();
+        initActions.add(new MapGeneratorAction());
+        List<Action> turnActions = new ArrayList<>();
+        turnActions.add(new AddEntityAction());
+        turnActions.add(new MoveCreaturesAction());
+        Simulation simulation = new Simulation(world, renderer, initActions, turnActions);
+        simulation.start();
+   }
 
     public static void testBFS() {
         DefaultValues defaultValues = new DefaultValues(0, 5, 5, 0,
                 new BreadthFirstSearchStrategy());
         World world = new World(10, 10, defaultValues);
         MapGeneratorAction action = new MapGeneratorAction();
-        action.run(world);
+        Renderer renderer = new ConsoleRenderer(world);
+        action.run(world, renderer);
         Set<Cell> targetCells = SearchStrategyUtils.getTargetCells(world.getMap(), Arrays.asList(Grass.class));
         Set<Cell> herbivores = SearchStrategyUtils.getTargetCells(world.getMap(), Arrays.asList(Herbivore.class));
         BreadthFirstSearchStrategy strategy = new BreadthFirstSearchStrategy();

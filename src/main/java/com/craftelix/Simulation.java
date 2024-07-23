@@ -24,15 +24,14 @@ public class Simulation {
 
     public void nextTurn() {
         for (Action action : turnActions) {
-            action.run(world);
+            action.run(world, renderer);
         }
-        renderer.render();
         moveCounter++;
     }
 
     public void start() {
         for (Action action : initActions) {
-            action.run(world);
+            action.run(world, renderer);
         }
         auto = true;
         play();
@@ -44,11 +43,11 @@ public class Simulation {
             if (moveCounter == 20) {
                 pause();
             }
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+//            try {
+//                Thread.sleep(2000);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
         }
     }
 

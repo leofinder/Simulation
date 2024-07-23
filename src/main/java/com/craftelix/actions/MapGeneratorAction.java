@@ -1,5 +1,6 @@
 package com.craftelix.actions;
 
+import com.craftelix.renderer.Renderer;
 import com.craftelix.world.Cell;
 import com.craftelix.world.DefaultValues;
 import com.craftelix.world.World;
@@ -9,7 +10,7 @@ import java.util.*;
 
 public class MapGeneratorAction implements Action {
 
-    public void run (World world) {
+    public void run (World world, Renderer renderer) {
         int rows = world.getRows();
         int cols = world.getCols();
         DefaultValues defaultValues = world.getDefaultValues();
@@ -23,6 +24,7 @@ public class MapGeneratorAction implements Action {
         ActionUtils.addEntities(map, Grass.class, defaultValues.resourceCount);
         ActionUtils.addEntities(map, Rock.class, defaultValues.staticObjectCount/2);
         ActionUtils.addEntities(map, Tree.class, defaultValues.staticObjectCount/2);
+        renderer.render();
     }
 
     private void initMap(Map<Cell, Entity> map, int rows, int cols) {

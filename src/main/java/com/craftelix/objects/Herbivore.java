@@ -18,20 +18,28 @@ public class Herbivore extends Creature {
         List<Cell> neighborTargetCells = SearchStrategyUtils.getNeighborTargetCells(cell, targetCells);
         if (!neighborTargetCells.isEmpty()) {
             Random random = new Random();
-            Cell targetCell = neighborTargetCells.get(random.nextInt(neighborTargetCells.size()));
-            Entity value = map.put(targetCell, this);
-            value = null;
-            cell = targetCell;
+            useResourceAt(neighborTargetCells.get(random.nextInt(neighborTargetCells.size())));
         } else {
             List<Cell> path = strategy.getPathToTargetCell(map, cell, targetCells);
-            if (!path.isEmpty()) {
-//                if (speed >= path.size()) {
-//                    targetCell = path.get(path.size() - 2);
-//                }
+            if (path.size() == 2) {
+                useResourceAt(path.get(1));
+            } else if (path.size() > 2) {
+                moveTo(speed > path.size() - 1 ? path.get(path.size() - 2) : path.get(speed));
             }
-
         }
+    }
 
+    private void moveTo(Cell targetCell) {
+        map.put(cell, null);
+        map.put(targetCell, this);
+        cell = targetCell;
+    }
+
+    private void useResourceAt(Cell targetCell) {
+        map.put(cell, null);
+        Entity value = map.put(targetCell, this);
+        value = null;
+        cell = targetCell;
     }
 
     @Override
