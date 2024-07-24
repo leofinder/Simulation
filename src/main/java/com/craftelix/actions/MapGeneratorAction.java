@@ -10,7 +10,7 @@ import java.util.*;
 
 public class MapGeneratorAction implements Action {
 
-    public void run (World world, Renderer renderer) {
+    public void run(World world, Renderer renderer) {
         int rows = world.getRows();
         int cols = world.getCols();
         DefaultValues defaultValues = world.getDefaultValues();
@@ -19,11 +19,11 @@ public class MapGeneratorAction implements Action {
         Map<Cell, Entity> map = world.getMap();
         initMap(map, rows, cols);
         List<Creature> creatures = world.getCreatures();
-        ActionUtils.addEntities(map, Predator.class, defaultValues.predatorCount, creatures, defaultValues.strategy);
-        ActionUtils.addEntities(map, Herbivore.class, defaultValues.herbivoreCount, creatures, defaultValues.strategy);
+        ActionUtils.addEntities(map, Tree.class, defaultValues.staticObjectCount / 2);
+        ActionUtils.addEntities(map, Rock.class, defaultValues.staticObjectCount / 2);
         ActionUtils.addEntities(map, Grass.class, defaultValues.resourceCount);
-        ActionUtils.addEntities(map, Rock.class, defaultValues.staticObjectCount/2);
-        ActionUtils.addEntities(map, Tree.class, defaultValues.staticObjectCount/2);
+        ActionUtils.addEntities(map, Herbivore.class, defaultValues.herbivoreCount, creatures, defaultValues.strategy);
+        ActionUtils.addEntities(map, Predator.class, defaultValues.predatorCount, creatures, defaultValues.strategy);
         renderer.render();
     }
 
