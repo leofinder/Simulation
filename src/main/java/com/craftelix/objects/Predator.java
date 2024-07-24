@@ -42,12 +42,14 @@ public class Predator extends Creature {
     }
 
     private void moveTo(Cell targetCell) {
+        System.out.println("predator " + this.cell + " move to " + targetCell);
         map.put(cell, null);
         map.put(targetCell, this);
         cell = targetCell;
     }
 
     private void hitEnemyAt(Cell targetCell) {
+        System.out.println("predator " + this.cell + " hit at " + targetCell);
         Herbivore herbivore = (Herbivore) map.get(targetCell);
         herbivore.health  = this.attack > herbivore.health ? 0 : herbivore.health - this.attack;
         if (herbivore.health == 0) {

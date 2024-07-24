@@ -12,7 +12,7 @@ public class MoveCreaturesAction implements Action {
             creature.makeMove();
             renderer.render();
             try {
-                Thread.sleep(1000);
+                Thread.sleep(2000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

@@ -45,16 +45,15 @@ public class BreadthFirstSearchStrategy implements SearchStrategy {
                 if (!map.containsKey(neighborCell)) {
                     continue;
                 }
-                if (map.get(neighborCell) != null && !(map.get(neighborCell) instanceof Resources)) {
-                    continue;
-                }
-                if (!visited.contains(neighborCell)) {
-                    treeList.add(cell, neighborCell);
-                    if (targetCells.contains(neighborCell)) {
-                        targetFound = true;
+                if (map.get(neighborCell) == null || targetCells.contains(neighborCell)) {
+                    if (!visited.contains(neighborCell)) {
+                        treeList.add(cell, neighborCell);
+                        if (targetCells.contains(neighborCell)) {
+                            targetFound = true;
+                        }
+                        queue.add(neighborCell);
+                        visited.add(neighborCell);
                     }
-                    queue.add(neighborCell);
-                    visited.add(neighborCell);
                 }
             }
         }

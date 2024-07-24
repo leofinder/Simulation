@@ -35,14 +35,18 @@ public class Herbivore extends Creature {
     }
 
     private void moveTo(Cell targetCell) {
+        System.out.println("Herbivore " + this + " moved to " + targetCell);
         map.put(cell, null);
         map.put(targetCell, this);
         cell = targetCell;
+
     }
 
     private void useResourceAt(Cell targetCell) {
+        System.out.println("Herbivore " + this + " uses " + targetCell);
         Entity value = map.put(targetCell, null);
         value = null;
+
     }
 
     @Override
