@@ -8,7 +8,8 @@ import java.util.List;
 
 public class Simulation {
 
-    private boolean auto;
+    private volatile boolean auto = true;
+    private volatile boolean running = true;
     private int moveCounter = 0;
     private final World world;
     private final Renderer renderer;
@@ -33,26 +34,29 @@ public class Simulation {
         for (Action action : initActions) {
             action.run(world, renderer);
         }
-        auto = true;
-        play();
+        //play();
     }
 
     public void play() {
-        while (auto) {
-            nextTurn();
-            if (moveCounter == 20) {
-                pause();
+        while (true) {
+            if (auto) {
+                nextTurn();
             }
-//            try {
-//                Thread.sleep(2000);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
+            if (!running) {
+                break;
+            }
         }
     }
 
     public void pause() {
-        auto = false;
+        if (auto) {
+            auto = false;
+        } else {
+            auto = true;
+        }
     }
 
+    public void setRunning() {
+        this.running = false;
+    }
 }

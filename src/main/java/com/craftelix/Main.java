@@ -6,18 +6,15 @@ import com.craftelix.actions.MapGeneratorAction;
 import com.craftelix.actions.MoveCreaturesAction;
 import com.craftelix.objects.Grass;
 import com.craftelix.objects.Herbivore;
+import com.craftelix.renderer.ConsoleRenderer;
+import com.craftelix.renderer.Renderer;
 import com.craftelix.strategy.BreadthFirstSearchStrategy;
 import com.craftelix.strategy.SearchStrategyUtils;
 import com.craftelix.world.Cell;
 import com.craftelix.world.DefaultValues;
-import com.craftelix.renderer.ConsoleRenderer;
 import com.craftelix.world.World;
-import com.craftelix.renderer.Renderer;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -25,8 +22,8 @@ public class Main {
 
         DefaultValues defaultValues = new DefaultValues(7, 10, 20, 40,
                 new BreadthFirstSearchStrategy());
-        World world = new World(10, 30, defaultValues);
 
+        World world = new World(10, 30, defaultValues);
         Renderer renderer = new ConsoleRenderer(world);
         List<Action> initActions = new ArrayList<>();
         initActions.add(new MapGeneratorAction());
@@ -34,7 +31,22 @@ public class Main {
         turnActions.add(new AddEntityAction());
         turnActions.add(new MoveCreaturesAction());
         Simulation simulation = new Simulation(world, renderer, initActions, turnActions);
-        simulation.start();
+        Thread threadSimulation = new Thread(simulation::start);
+        threadSimulation.start();
+
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            String input = scanner.next();
+            if ("p".equalsIgnoreCase(input)) {
+                simulation.pause();
+            } else if ("q".equalsIgnoreCase(input)) {
+                simulation.setRunning();
+                break;
+            } else if ("n".equalsIgnoreCase(input)) {
+                simulation.nextTurn();
+            }
+        }
+
    }
 
     public static void testBFS() {
