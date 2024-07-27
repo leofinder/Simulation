@@ -28,13 +28,18 @@ public class Simulation {
             action.run(world, renderer);
         }
         moveCounter++;
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public void start() {
         for (Action action : initActions) {
             action.run(world, renderer);
         }
-        //play();
+        play();
     }
 
     public void play() {
@@ -56,7 +61,11 @@ public class Simulation {
         }
     }
 
-    public void setRunning() {
-        this.running = false;
+    public void setRunning(boolean running) {
+        this.running = running;
+    }
+
+    public boolean isAuto() {
+        return auto;
     }
 }

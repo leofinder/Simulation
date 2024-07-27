@@ -26,7 +26,7 @@ public class ActionUtils {
                 creatures.add((Predator) entity);
             } else if (entityClass == Herbivore.class) {
                 entity = new Herbivore(cell, map, 100, 9, strategy);
-                creatures.add((Herbivore) entity);
+                creatures.add(0, (Herbivore) entity);
             } else if (entityClass == Grass.class) {
                 entity = new Grass();
             } else if (entityClass == Rock.class) {

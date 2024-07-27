@@ -3,7 +3,9 @@ package com.craftelix.objects;
 import com.craftelix.strategy.SearchStrategy;
 import com.craftelix.world.Cell;
 
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public abstract class Creature extends Entity {
 
@@ -39,6 +41,20 @@ public abstract class Creature extends Entity {
 
     public int getSpeed() {
         return speed;
+    }
+
+    public void moveTo(Cell targetCell) {
+        System.out.println(this + " moved to " + targetCell);
+        map.put(cell, null);
+        map.put(targetCell, this);
+        cell = targetCell;
+    }
+
+    public void moveTo(Cell lastCell, List<Cell> path, Set<Cell> targetCells) {
+        int cellsCount = targetCells.contains(lastCell) ? path.size() - 1 : path.size();
+        Cell targetCell = speed > cellsCount ? path.get(cellsCount - 1) : path.get(speed - 1);
+        System.out.println("Path: " + (speed > path.size() ? path.size() - 1 : speed));
+        moveTo(targetCell);
     }
 
     public abstract void makeMove();

@@ -3,7 +3,7 @@ package com.craftelix.world;
 import java.util.Objects;
 
 public class Cell {
-    // todo: уточнить про геттеры для final полей
+
     private final int row;
     private final int col;
 

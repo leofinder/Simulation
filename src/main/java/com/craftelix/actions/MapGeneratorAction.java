@@ -14,7 +14,7 @@ public class MapGeneratorAction implements Action {
         int rows = world.getRows();
         int cols = world.getCols();
         DefaultValues defaultValues = world.getDefaultValues();
-        validate(rows, cols, defaultValues.predatorCount, defaultValues.herbivoreCount);
+        validate(rows, cols, defaultValues);
 
         Map<Cell, Entity> map = world.getMap();
         initMap(map, rows, cols);
@@ -36,13 +36,14 @@ public class MapGeneratorAction implements Action {
         }
     }
 
-    private void validate(int rows, int cols, int predatorCount, int herbivoreCount) {
+    private void validate(int rows, int cols, DefaultValues defaultValues) {
         if (rows < 3 || cols < 3) {
             throw new IllegalArgumentException("Размер поля должен быть 3х3 или больше");
         }
-        if (rows * cols < 2 * (predatorCount + herbivoreCount)) {
+        int entityCount = defaultValues.staticObjectCount + defaultValues.resourceCount + defaultValues.herbivoreCount + defaultValues.predatorCount;
+        if (rows * cols <= entityCount) {
             throw new IllegalArgumentException(String.format(
-                    "Количество существ %d не может быть размещено на поле %dх%d", predatorCount + herbivoreCount, rows, cols)
+                    "Количество существ %d не может быть размещено на поле %dх%d", entityCount, rows, cols)
             );
         }
     }

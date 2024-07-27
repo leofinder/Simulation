@@ -19,29 +19,13 @@ public class SearchStrategyUtils {
         return neighborCells;
     }
 
-    public static Set<Cell> getTargetCells(Map<Cell, Entity> map, List<Class> targetClasses) {
+    public static Set<Cell> getTargetCells(Map<Cell, Entity> map, Class targetClass) {
         Set<Cell> targetCells = new HashSet<>();
         for (Map.Entry<Cell, Entity> entry : map.entrySet()) {
-            if (entry.getValue() == null) {
-                continue;
-            }
-            for (Class targetClass : targetClasses) {
-                if (entry.getValue().getClass() == targetClass) {
-                    targetCells.add(entry.getKey());
-                }
+            if (entry.getValue() != null && entry.getValue().getClass().equals(targetClass)) {
+                targetCells.add(entry.getKey());
             }
         }
         return targetCells;
-    }
-
-    public static List<Cell> getNeighborTargetCells(Cell currentCell, Set<Cell> targetCells) {
-        List<Cell> neighborTargetCells = new ArrayList<>();
-        Set<Cell> neighborCells = getNeighborCells(currentCell);
-        for (Cell neighborCell : neighborCells) {
-            if (targetCells.contains(neighborCell)) {
-                neighborTargetCells.add(neighborCell);
-            }
-        }
-        return neighborTargetCells;
     }
 }

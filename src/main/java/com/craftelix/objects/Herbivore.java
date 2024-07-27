@@ -14,39 +14,21 @@ public class Herbivore extends Creature {
 
     @Override
     public void makeMove() {
-        Set<Cell> targetCells = SearchStrategyUtils.getTargetCells(map, Arrays.asList(Grass.class));
-        List<Cell> neighborTargetCells = SearchStrategyUtils.getNeighborTargetCells(cell, targetCells);
-        if (!neighborTargetCells.isEmpty()) {
-            Random random = new Random();
-            Cell targetCell = neighborTargetCells.get(random.nextInt(neighborTargetCells.size()));
-            useResourceAt(targetCell);
-            moveTo(targetCell);
+        Set<Cell> targetCells = SearchStrategyUtils.getTargetCells(map, Grass.class);
+        List<Cell> path = strategy.getPathToTargetCell(map, cell, targetCells);
+        Cell lastCell = path.get(path.size() - 1);
+        if (targetCells.contains(lastCell) && path.size() == 2) {
+            System.out.println("Path: " + path.size());
+            useResourceAt(lastCell);
+            super.moveTo(lastCell);
         } else {
-            List<Cell> path = strategy.getPathToTargetCell(map, cell, targetCells);
-            if (path.size() == 2) {
-                Cell targetCell = path.get(1);
-                useResourceAt(targetCell);
-                moveTo(targetCell);
-            } else if (path.size() > 2) {
-                Cell targetCell = speed > path.size() - 1 ? path.get(path.size() - 2) : path.get(speed);
-                moveTo(targetCell);
-            }
+            super.moveTo(lastCell, path, targetCells);
         }
     }
 
-    private void moveTo(Cell targetCell) {
-        System.out.println("Herbivore " + this + " moved to " + targetCell);
-        map.put(cell, null);
-        map.put(targetCell, this);
-        cell = targetCell;
-
-    }
-
     private void useResourceAt(Cell targetCell) {
-        System.out.println("Herbivore " + this + " uses " + targetCell);
-        Entity value = map.put(targetCell, null);
-        value = null;
-
+        System.out.println(this + " uses " + targetCell);
+        map.put(targetCell, null);
     }
 
     @Override
