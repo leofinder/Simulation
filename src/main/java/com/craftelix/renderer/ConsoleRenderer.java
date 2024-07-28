@@ -8,7 +8,7 @@ public class ConsoleRenderer implements Renderer {
 
     @Override
     public void render(World world) {
-        System.out.print("\033[H\033[2J");
+        clearConsole();
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < world.rows; i++) {
             for (int j = 0; j < world.cols; j++) {
@@ -19,8 +19,12 @@ public class ConsoleRenderer implements Renderer {
         System.out.println(builder);
     }
 
+    private void clearConsole() {
+        System.out.print("\033[H\033[2J");
+    }
+
     private String getSprite(Cell cell, World world) {
-        String emptySprite = "⬛";
+        String emptySprite = "\uD83C\uDFFC";
         if (world.isCellEmpty(cell)) {
             return emptySprite;
         }
@@ -33,7 +37,7 @@ public class ConsoleRenderer implements Renderer {
             case "Grass":
                 return "\uD83C\uDF31";
             case "Rock":
-                return "⛰\uFE0F";
+                return "\uD83E\uDEA8";
             case "Tree":
                 return "\uD83C\uDF33";
             default:
