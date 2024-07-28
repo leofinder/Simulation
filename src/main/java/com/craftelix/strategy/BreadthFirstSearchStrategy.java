@@ -1,15 +1,15 @@
 package com.craftelix.strategy;
 
-import com.craftelix.objects.Entity;
 import com.craftelix.world.Cell;
+import com.craftelix.world.World;
 
 import java.util.*;
 
 public class BreadthFirstSearchStrategy implements SearchStrategy {
 
     @Override
-    public List<Cell> getPathToTargetCell(Map<Cell, Entity> map, Cell startCell, Set<Cell> targetCells) {
-        TreeList<Cell> treeList = getTreeList(map, startCell, targetCells);
+    public List<Cell> getPathToTargetCell(World world, Cell startCell, Set<Cell> targetCells) {
+        TreeList<Cell> treeList = getTreeList(world, startCell, targetCells);
         List<Cell> lastNodeValues = treeList.getLastNodeValues();
         List<Cell> path = new ArrayList<>();
         for (Cell cell : lastNodeValues) {
@@ -26,7 +26,7 @@ public class BreadthFirstSearchStrategy implements SearchStrategy {
         return path;
     }
 
-    public static TreeList<Cell> getTreeList(Map<Cell, Entity> map, Cell startCell, Set<Cell> targetCells) {
+    private TreeList<Cell> getTreeList(World world, Cell startCell, Set<Cell> targetCells) {
         Queue<Cell> queue = new LinkedList<>();
         Set<Cell> visited = new HashSet<>();
         queue.add(startCell);
@@ -36,11 +36,8 @@ public class BreadthFirstSearchStrategy implements SearchStrategy {
 
         while (!queue.isEmpty() && !targetFound) {
             Cell cell = queue.remove();
-            for (Cell neighborCell : SearchStrategyUtils.getNeighborCells(cell)) {
-                if (!map.containsKey(neighborCell)) {
-                    continue;
-                }
-                if (map.get(neighborCell) == null || targetCells.contains(neighborCell)) {
+            for (Cell neighborCell : getNeighborCells(cell, world)) {
+                if (world.isCellEmpty(neighborCell) || targetCells.contains(neighborCell)) {
                     if (!visited.contains(neighborCell)) {
                         treeList.add(cell, neighborCell);
                         if (targetCells.contains(neighborCell)) {
@@ -55,4 +52,20 @@ public class BreadthFirstSearchStrategy implements SearchStrategy {
         return treeList;
     }
 
+    private Set<Cell> getNeighborCells(Cell cell, World world) {
+        Set<Cell> neighborCells = new HashSet<>();
+        if (cell.row > 0) {
+            neighborCells.add(new Cell(cell.row - 1, cell.col));
+        }
+        if (cell.row + 1 < world.rows) {
+            neighborCells.add(new Cell(cell.row + 1, cell.col));
+        }
+        if (cell.col > 0) {
+            neighborCells.add(new Cell(cell.row, cell.col - 1));
+        }
+        if (cell.col + 1 < world.cols) {
+            neighborCells.add(new Cell(cell.row, cell.col + 1));
+        }
+        return neighborCells;
+    }
 }

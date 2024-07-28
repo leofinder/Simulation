@@ -2,29 +2,36 @@ package com.craftelix.actions;
 
 import com.craftelix.objects.Creature;
 import com.craftelix.objects.Herbivore;
+import com.craftelix.objects.Predator;
 import com.craftelix.renderer.Renderer;
 import com.craftelix.world.World;
 
-import java.util.List;
-import java.util.Objects;
-
 public class MoveCreaturesAction implements Action {
     @Override
-    public void run(World world, Renderer renderer) {
-        List<Creature> creatures = world.getCreatures();
-        for (int i = 0; i < creatures.size(); i++) {
-            Creature creature = creatures.get(i);
-            if (creature instanceof Herbivore && creature.getHealth() == 0) {
-                creatures.set(i, null);
-            }
-            creature.makeMove();
-            renderer.render();
-            try {
-                Thread.sleep(200);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+    public void perform(World world, Renderer renderer) {
+
+        for (Herbivore herbivore : world.herbivore) {
+            if (herbivore.getHealth() != 0) {
+                handleCreatureMovement(herbivore, world, renderer);
             }
         }
-        world.getCreatures().removeIf(Objects::isNull);
+        for (Predator predator : world.predators) {
+            handleCreatureMovement(predator, world, renderer);
+        }
+        world.herbivore.removeIf(o -> o.getHealth() == 0);
+    }
+
+    private void handleCreatureMovement(Creature creature, World world, Renderer renderer) {
+        creature.makeMove();
+        renderer.render(world);
+        sleep();
+    }
+
+    private void sleep() {
+        try {
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -25,24 +25,20 @@ public class Simulation {
 
     public void nextTurn() {
         for (Action action : turnActions) {
-            action.run(world, renderer);
+            action.perform(world, renderer);
         }
         moveCounter++;
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        sleep();
     }
 
     public void start() {
         for (Action action : initActions) {
-            action.run(world, renderer);
+            action.perform(world, renderer);
         }
-        play();
+        loop();
     }
 
-    public void play() {
+    public void loop() {
         while (true) {
             if (auto) {
                 nextTurn();
@@ -61,8 +57,16 @@ public class Simulation {
         }
     }
 
-    public void setRunning(boolean running) {
-        this.running = running;
+    private void sleep() {
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void quit() {
+        this.running = false;
     }
 
     public boolean isAuto() {

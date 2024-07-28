@@ -1,12 +1,11 @@
 package com.craftelix.actions;
 
 import com.craftelix.objects.*;
-import com.craftelix.strategy.SearchStrategy;
 import com.craftelix.world.Cell;
+import com.craftelix.world.World;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 public class ActionUtils {
@@ -15,39 +14,42 @@ public class ActionUtils {
         throw new UnsupportedOperationException("Utility class");
     }
 
-    public static void addEntities(Map<Cell, Entity> map, Class entityClass, int entityCount, List<Creature> creatures, SearchStrategy strategy) {
+    public static void addEntities(World world, Class<? extends Entity> entityClass, int entityCount) {
         Random random = new Random();
-        List<Cell> freeCells = getFreeCells(map);
-        Entity entity = null;
+        List<Cell> freeCells = getFreeCells(world);
         for (int i = 0; i < entityCount; i++) {
             Cell cell = freeCells.get(random.nextInt(freeCells.size()));
-            if (entityClass == Predator.class) {
-                entity = new Predator(cell, map, 100, 6, 30, strategy);
-                creatures.add((Predator) entity);
-            } else if (entityClass == Herbivore.class) {
-                entity = new Herbivore(cell, map, 100, 9, strategy);
-                creatures.add(0, (Herbivore) entity);
-            } else if (entityClass == Grass.class) {
-                entity = new Grass();
-            } else if (entityClass == Rock.class) {
-                entity = new Rock();
-            } else if (entityClass == Tree.class) {
-                entity = new Tree();
+            switch (entityClass.getSimpleName()) {
+                case "Predator":
+                    world.addEntity(cell, new Predator(cell, world, 100, 6, 50, world.defaultValues.strategy));
+                    break;
+                case "Herbivore":
+                    world.addEntity(cell, new Herbivore(cell, world, 100, 9, world.defaultValues.strategy));
+                    break;
+                case "Grass":
+                    world.addEntity(cell, new Grass());
+                    break;
+                case "Rock":
+                    world.addEntity(cell, new Rock());
+                    break;
+                case "Tree":
+                    world.addEntity(cell, new Tree());
+                    break;
+                default:
+                    break;
             }
-            map.put(cell, entity);
             freeCells.remove(cell);
         }
     }
 
-    public static void addEntities(Map<Cell, Entity> map, Class entityClass, int entityCount) {
-        addEntities(map, entityClass, entityCount, null, null);
-    }
-
-    public static List<Cell> getFreeCells(Map<Cell, Entity> map) {
+    public static List<Cell> getFreeCells(World world) {
         List<Cell> freeCells = new ArrayList<>();
-        for (Map.Entry<Cell, Entity> entry : map.entrySet()) {
-            if (entry.getValue() == null) {
-                freeCells.add(entry.getKey());
+        for (int row = 0; row < world.rows; row++) {
+            for (int col = 0; col < world.cols; col++) {
+                Cell cell = new Cell(row, col);
+                if (world.isCellEmpty(cell)) {
+                    freeCells.add(cell);
+                }
             }
         }
         return freeCells;

@@ -1,49 +1,47 @@
 package com.craftelix.objects;
 
 import com.craftelix.strategy.SearchStrategy;
-import com.craftelix.strategy.SearchStrategyUtils;
 import com.craftelix.world.Cell;
-
-import java.util.*;
+import com.craftelix.world.World;
 
 public class Predator extends Creature {
 
-    private final int attack;
+    public final int attack;
 
-    public Predator(Cell cell, Map<Cell, Entity> map, int health, int speed, int attack, SearchStrategy strategy) {
-        super(cell, map, health, speed, strategy);
+    public Predator(Cell cell, World world, int health, int speed, int attack, SearchStrategy strategy) {
+        super(cell, world, health, speed, strategy);
         this.attack = attack;
     }
 
     @Override
     public void makeMove() {
-        Set<Cell> targetCells = SearchStrategyUtils.getTargetCells(map, Herbivore.class);
-        List<Cell> path = strategy.getPathToTargetCell(map, cell, targetCells);
-        Cell lastCell = path.get(path.size() - 1);
-        if (targetCells.contains(lastCell) && path.size() == 2) {
-            System.out.println("Path: " + path.size());
-            hitEnemyAt(lastCell);
-            if (map.get(lastCell) == null) {
-                super.moveTo(lastCell);
-            }
-        } else {
-            super.moveTo(lastCell, path, targetCells);
+        moveTo(Herbivore.class);
+    }
+
+    @Override
+    public void handleTargetInteraction(Cell targetCell) {
+        Herbivore herbivore = (Herbivore) world.getEntity(targetCell);
+        hitEnemy(herbivore);
+        if (herbivore.health == 0) {
+            System.out.println(this + " move to " + targetCell);
+            world.removeEntity(targetCell);
+            world.moveCreatureTo(targetCell, this);
         }
     }
 
-    private void hitEnemyAt(Cell targetCell) {
-        System.out.println(this + " hit at " + map.get(targetCell));
-        Herbivore herbivore = (Herbivore) map.get(targetCell);
-        herbivore.health  = this.attack > herbivore.health ? 0 : herbivore.health - this.attack;
-        if (herbivore.health == 0) {
-            map.put(targetCell, null);
-        }
+    private void hitEnemy(Herbivore herbivore) {
+        System.out.println(this + " hit " + herbivore);
+        herbivore.health = this.attack > herbivore.health ? 0 : herbivore.health - this.attack;
+        System.out.println("Herbivore health is " + herbivore.health);
     }
 
     @Override
     public String toString() {
         return "Predator{"
-                + "cell={" + cell.getRow() + "," + cell.getCol() + '}'
+                + "Cell={"
+                + "row=" + cell.row
+                + ", col=" + cell.col
+                + '}'
                 + ", health=" + health
                 + ", speed=" + speed
                 + ", attack=" + attack

@@ -14,11 +14,10 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        DefaultValues defaultValues = new DefaultValues(10, 10, 20, 40,
+        DefaultValues defaultValues = new DefaultValues(7, 10, 20, 40,
                 new BreadthFirstSearchStrategy());
-
         World world = new World(10, 30, defaultValues);
-        Renderer renderer = new ConsoleRenderer(world);
+        Renderer renderer = new ConsoleRenderer();
         List<Action> initActions = new ArrayList<>();
         initActions.add(new MapGeneratorAction());
         List<Action> turnActions = new ArrayList<>();
@@ -28,19 +27,23 @@ public class Main {
         Thread threadSimulation = new Thread(simulation::start);
         threadSimulation.start();
 
-        Scanner scanner = new Scanner(System.in);
-        while (true) {
-            String input = scanner.next();
-            if ("p".equalsIgnoreCase(input)) {
-                simulation.pause();
-            } else if ("n".equalsIgnoreCase(input)) {
-                if (!simulation.isAuto()) {
-                    simulation.nextTurn();
-                }
-            } else if ("q".equalsIgnoreCase(input)) {
-                simulation.setRunning(false);
-                break;
-            }
-        }
+        inputKey(simulation);
+   }
+
+   public static void inputKey(Simulation simulation) {
+       Scanner scanner = new Scanner(System.in);
+       while (true) {
+           String input = scanner.next();
+           if ("p".equalsIgnoreCase(input)) {
+               simulation.pause();
+           } else if ("n".equalsIgnoreCase(input)) {
+               if (!simulation.isAuto()) {
+                   simulation.nextTurn();
+               }
+           } else if ("q".equalsIgnoreCase(input)) {
+               simulation.quit();
+               break;
+           }
+       }
    }
 }

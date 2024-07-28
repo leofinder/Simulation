@@ -1,39 +1,22 @@
 package com.craftelix.actions;
 
 import com.craftelix.renderer.Renderer;
-import com.craftelix.world.Cell;
 import com.craftelix.world.DefaultValues;
 import com.craftelix.world.World;
 import com.craftelix.objects.*;
 
-import java.util.*;
-
 public class MapGeneratorAction implements Action {
 
-    public void run(World world, Renderer renderer) {
-        int rows = world.getRows();
-        int cols = world.getCols();
-        DefaultValues defaultValues = world.getDefaultValues();
-        validate(rows, cols, defaultValues);
+    public void perform(World world, Renderer renderer) {
+        validate(world.rows, world.cols, world.defaultValues);
 
-        Map<Cell, Entity> map = world.getMap();
-        initMap(map, rows, cols);
-        List<Creature> creatures = world.getCreatures();
-        ActionUtils.addEntities(map, Tree.class, defaultValues.staticObjectCount / 2);
-        ActionUtils.addEntities(map, Rock.class, defaultValues.staticObjectCount / 2);
-        ActionUtils.addEntities(map, Grass.class, defaultValues.resourceCount);
-        ActionUtils.addEntities(map, Herbivore.class, defaultValues.herbivoreCount, creatures, defaultValues.strategy);
-        ActionUtils.addEntities(map, Predator.class, defaultValues.predatorCount, creatures, defaultValues.strategy);
-        renderer.render();
-    }
+        ActionUtils.addEntities(world, Tree.class, world.defaultValues.staticObjectCount / 2);
+        ActionUtils.addEntities(world, Rock.class, world.defaultValues.staticObjectCount / 2);
+        ActionUtils.addEntities(world, Grass.class, world.defaultValues.resourceCount);
+        ActionUtils.addEntities(world, Herbivore.class, world.defaultValues.herbivoreCount);
+        ActionUtils.addEntities(world, Predator.class, world.defaultValues.predatorCount);
 
-    private void initMap(Map<Cell, Entity> map, int rows, int cols) {
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                Cell cell = new Cell(i, j);
-                map.put(cell, null);
-            }
-        }
+        renderer.render(world);
     }
 
     private void validate(int rows, int cols, DefaultValues defaultValues) {
@@ -43,7 +26,7 @@ public class MapGeneratorAction implements Action {
         int entityCount = defaultValues.staticObjectCount + defaultValues.resourceCount + defaultValues.herbivoreCount + defaultValues.predatorCount;
         if (rows * cols <= entityCount) {
             throw new IllegalArgumentException(String.format(
-                    "Количество существ %d не может быть размещено на поле %dх%d", entityCount, rows, cols)
+                    "Количество объектов %d не может быть размещено на поле %dх%d", entityCount, rows, cols)
             );
         }
     }
